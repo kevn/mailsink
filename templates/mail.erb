@@ -1,0 +1,19 @@
+<%= partial :headers %>
+<% if @mail.multipart? %>
+  <ol class="parts">
+  <% @mail.parts.each do |message| %>
+    <li>
+    <table>
+    <tr><td class="meta"><%= message.content_type %></td></tr>
+    <tr>
+      <td class="body">
+        <%= email_body(message.body.decoded, message.content_type) %>
+      </td>
+    </tr>
+    </table>
+    </li>
+  <% end %>
+  </ol>
+<% else %>
+<%= email_body(@mail.body.decoded, 'text/plain') %>
+<% end %>

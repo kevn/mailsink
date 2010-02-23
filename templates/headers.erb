@@ -1,0 +1,9 @@
+<div id="header-control"></div>
+<table class="headers">
+  <% @mail.header_fields.each do |f| %>
+  <tr>
+    <td class="key"><%=h f.name %>:</td>
+    <td class="value"><%=h f.value %></td>
+  </tr>
+<% end %>
+</table>
