@@ -1,7 +1,7 @@
 <ol>
-<% @files.each do |f| %>
+<% @mails.each do |mail| %>
   <li>
-    <%= mail_link(f, f) %>
+    <%= Time.at(mail.date_sent).strftime('%m/%d/%Y %I:%M%p %Z') %> <%= mail_link(mail.subject, mail.id) %>
   </li>
 <% end %>
 </ol>

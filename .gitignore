@@ -2,3 +2,4 @@
 vendor
 maildir
 tmp/restart.txt
+mail.db

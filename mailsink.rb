@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w(lib))
+
 require 'rubygems'
 begin
   # Try to require the preresolved locked set of gems.
@@ -10,17 +12,22 @@ rescue LoadError
 end
 
 require 'sinatra'
-require 'mail'
+require 'mail_store'
 
+DB_PATH = File.dirname(__FILE__)
+DB_FILE = DB_PATH + '/mail.db'
 MAILDIR_PATH = File.dirname(__FILE__) + '/maildir'
 
-FileUtils.mkdir_p MAILDIR_PATH
+$mail_store = MailStore.new(
+  :maildir => MAILDIR_PATH,
+  :db => {:adapter => 'sqlite3', :database => DB_FILE }
+)
 
 set :views, File.dirname(__FILE__) + '/templates'
 
 helpers do
   def mail_link(text, id)
-    %(<a href="/mail/#{ URI.escape(id) }">#{ h(text) }</a>)
+    %(<a href="/mail/#{ URI.escape(id.to_s) }">#{ h(text) }</a>)
   end
   
   def email_body(body, content_type)
@@ -48,11 +55,11 @@ helpers do
 end
 
 get '/' do
-  @files = Dir.glob("#{MAILDIR_PATH}/*").map{|f| File.basename(f)}.sort.reverse
+  @mails = $mail_store.sync!.all(:order => 'date_sent desc')
   erb :index
 end
 
 get '/mail/:id' do
-  @mail = Mail.read(MAILDIR_PATH + '/' + params[:id])
+  @mail = $mail_store.find_mail_by_id(params[:id])
   erb :mail
 end
