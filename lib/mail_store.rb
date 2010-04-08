@@ -18,12 +18,14 @@ class MailStore
         Message.create!(:source => f, :raw => File.read(file_from_id(f)))
       end
     end
-    # Message.delete_all('source not in (?)', files)
+    Message.delete_all(['source not in (?)', files])
     self
   end
   
   def find_mail_by_id(id)
-    Message.find_by_id(id)
+    Message.find_by_id(id) or begin
+      Message.create!(:source => id, :raw => File.read(file_from_id(id)))
+    end
   end
   
   def all(opts = {})

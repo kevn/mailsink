@@ -1,5 +1,3 @@
-<div class="body">
-<pre><code>
-<%=h body %>
-</code></pre>
+<div class="body plain">
+<%=h(body).gsub("\n", "<br/>").gsub(' ', '&nbsp;') %>
 </div>

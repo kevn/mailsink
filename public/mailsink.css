@@ -1,0 +1,10 @@
+.email {
+    width:75%;
+}
+
+.body.plain {
+    font-size: 12px;
+    font-family:     "Courier New"
+                        Courier
+                        monospace;
+}

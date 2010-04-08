@@ -1,4 +1,5 @@
 <%= partial :headers %>
+<div class="email">
 <% if @mail.multipart? %>
   <ol class="parts">
   <% @mail.parts.each do |message| %>
@@ -17,3 +18,4 @@
 <% else %>
 <%= email_body(@mail.body.decoded, 'text/plain') %>
 <% end %>
+</div>

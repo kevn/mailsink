@@ -1,7 +1,5 @@
 require "mailsink"
 
-Sinatra::Application.default_options.merge!(
-  :run => false
-)
+Sinatra::Base.set(:run, false)
 run Sinatra::Application
 
